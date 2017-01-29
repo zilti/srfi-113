@@ -3,6 +3,8 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>SRFI 113: Sets and Bags</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/srfi.css" type="text/css" />
   </head>
 <body>
 
@@ -50,9 +52,11 @@ the archive of the mailing list</a>.
       <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.12.html">2014/11/16</a></li>
       <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.13.html">2014/11/28</a></li>
       <li>Final: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.14.html">2014/11/29</a></li>
-      <li>Revised to fix errata: 2016/5/14</li>
+      <li>Revised to fix errata: 2016/5/14 (Add post-finalization note.)</li>
+      <li>Revised to fix errata: 2016/11/29 (Fixed calls to `set-map` and `bag-map`.)
+      <li>Revised to fix errata: 2017/1/3 (Replaced references to "character set" with "set or bag.")</li>
     </ul>
-<p><b>Post-finalization note</b>:  Because SRFI 114 has been deprecated
+<p><b>Post-finalization note 1</b>: Because SRFI 114 has been deprecated
         by SRFI 128, it is recommended that implementers make use of
         SRFI 128 rather than SRFI 114 comparators where comparators are
         specified in this SRFI.  Specifically, the procedures <code>set</code>,
@@ -64,6 +68,8 @@ the archive of the mailing list</a>.
         should be SRFI 128 comparators.  The sample implementation has
         been updated to depend on SRFI 128 rather than SRFI 114.
 </p>
+<p><b>Post-finalization note 2</b>: The order of arguments of <code>set-map</code> and <code>set-unfold</code> are not consistent with those of <code>hash-table-map</code> and <code>hash-table-unfold</code> in <a href="https://srfi.schemers.org/srfi-125/">SRFI 125</a>.  Both SRFI 113 and SRFI 125 are going to be part of R7RS large (also known as the <a href="http://trac.sacrideo.us/wg/wiki/RedEdition">Red Edition</a>), and the plan is to make them consistent there, following the order in SRFI 125.  Furthermore, <a href="https://srfi.schemers.org/srfi-146/">SRFI 146</a> (in draft status at the time of this writing) uses the order of SRFI 125.  Since this problem was discovered after SRFI 113 was finalized, and it wasn't an error in the SRFI, it's too late to fix it here.  However, John Cowan, the author, encourages implementers to consider adopting the order of SRFI 125.  Thanks to Marc Nieper-Wißkirchen for reporting this mismatch, and for providing a version of SRFI 113 with the recommended argument order in the implementation of SRFI 146.</p>
+
 <h1>Abstract</h1><p><em>Sets</em> and <em>bags</em> (also known as multisets) are unordered collections that can contain any Scheme object.  Sets enforce the constraint that no two elements can be the same in the sense of the set's associated <em>equality predicate</em>; bags do not.
 
 </p>
@@ -113,7 +119,7 @@ the archive of the mailing list</a>.
           (set-adjoin! set1 'd)) ; Add d to {a,b,c}.
 </pre>
   
-<p>So clients of these procedures write in a functional style, but must additionally be sure that, when the procedure is called, there are no other live pointers to the potentially-modified character set (hence the term "linear update").</p>
+<p>So clients of these procedures write in a functional style, but must additionally be sure that, when the procedure is called, there are no other live pointers to the potentially-modified set or bag (hence the term "linear update").</p>
 
 <p>There are two benefits to this convention:</p>
 
@@ -121,7 +127,7 @@ the archive of the mailing list</a>.
 
 <li><p>Programmers may nonetheless continue to assume that sets are purely functional data structures: they may be reliably shared without needing to be copied, uniquified, and so forth.</p></li></ul>
 
-<p>In practice, these procedures are most useful for efficiently constructing sets and bags in a side-effecting manner, in some limited local context, before passing the character set outside the local construction scope to be used in a functional manner.</p>
+<p>In practice, these procedures are most useful for efficiently constructing sets and bags in a side-effecting manner, in some limited local context, before passing the set or bag outside the local construction scope to be used in a functional manner.</p>
 
 <p>Scheme provides no assistance in checking the linearity of the potentially side-effected parameters passed to these functions — there's no linear type checker or run-time mechanism for detecting violations.</p>
 
