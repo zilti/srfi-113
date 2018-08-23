@@ -1,25 +1,31 @@
-(use test)
-(use srfi-113)
-(use srfi-128)
+(cond-expand
+  (chicken-5
+   (import test
+           (only srfi-13 string-downcase)
+           srfi-113
+           srfi-128))
+  (else
+   (use test)
+   (use srfi-113)
+   (use srfi-128)))
+
 (load "../sets/comparators-shim.scm")
 
-(test-group "sets"
 (define (big x) (> x 5))
 
-(test-group "sets"
+(define nums (set number-comparator))
+;; nums is now {}
+(define syms (set eq-comparator 'a 'b 'c 'd))
+;; syms is now {a, b, c, d}
+(define nums2 (set-copy nums))
+;; nums2 is now {}
+(define syms2 (set-copy syms))
+;; syms2 is now {a, b, c, d}
+(define esyms (set eq-comparator))
+;; esyms is now {}
+(define total 0)
 (test-group "sets/simple"
-  (define nums (set number-comparator))
-  ;; nums is now {}
-  (define syms (set eq-comparator 'a 'b 'c 'd))
-  ;; syms is now {a, b, c, d}
-  (define nums2 (set-copy nums))
-  ;; nums2 is now {}
-  (define syms2 (set-copy syms))
-  ;; syms2 is now {a, b, c, d}
-  (define esyms (set eq-comparator))
-  ;; esyms is now {}
   (test-assert (set-empty? esyms))
-  (define total 0)
   (test-assert (set? nums))
   (test-assert (set? syms))
   (test-assert (set? nums2))
@@ -72,43 +78,43 @@
   (test 4 (set-size syms2))
 ) ; end sets/simple
 
+(define yam (set char-comparator #\y #\a #\m))
+(define (failure/insert insert ignore)
+  (insert 1))
+(define (failure/ignore insert ignore)
+  (ignore 2))
+(define (success/update element update remove)
+  (update #\b 3))
+(define (success/remove element update remove)
+  (remove 4))
+(define yam! (set char-comparator #\y #\a #\m #\!))
+(define bam (set char-comparator #\b #\a #\m))
+(define ym (set char-comparator #\y #\m))
+(define-values (set1 obj1)
+  (set-search! (set-copy yam) #\! failure/insert error))
+(define-values (set3 obj3)
+  (set-search! (set-copy yam) #\y error success/update))
+(define-values (set4 obj4)
+  (set-search! (set-copy yam) #\a error success/remove))
 (test-group "sets/search"
-  (define yam (set char-comparator #\y #\a #\m))
-  (define (failure/insert insert ignore)
-    (insert 1))
-  (define (failure/ignore insert ignore)
-    (ignore 2))
-  (define (success/update element update remove)
-    (update #\b 3))
-  (define (success/remove element update remove)
-    (remove 4))
-  (define yam! (set char-comparator #\y #\a #\m #\!))
-  (define bam (set char-comparator #\b #\a #\m))
-  (define ym (set char-comparator #\y #\m))
-  (define-values (set1 obj1)
-    (set-search! (set-copy yam) #\! failure/insert error))
   (test-assert (set=? yam! set1))
   (test 1 obj1)
   (define-values (set2 obj2)
     (set-search! (set-copy yam) #\! failure/ignore error))
   (test-assert (set=? yam set2))
   (test 2 obj2)
-  (define-values (set3 obj3)
-    (set-search! (set-copy yam) #\y error success/update))
   (test-assert (set=? bam set3))
   (test 3 obj3)
-  (define-values (set4 obj4)
-    (set-search! (set-copy yam) #\a error success/remove))
   (test-assert (set=? ym set4))
   (test 4 obj4)
 ) ; end sets/search
 
+(define set2 (set number-comparator 1 2))
+(define other-set2 (set number-comparator 1 2))
+(define set3 (set number-comparator 1 2 3))
+(define set4 (set number-comparator 1 2 3 4))
+(define setx (set number-comparator 10 20 30 40))
 (test-group "sets/subsets"
-  (define set2 (set number-comparator 1 2))
-  (define other-set2 (set number-comparator 1 2))
-  (define set3 (set number-comparator 1 2 3))
-  (define set4 (set number-comparator 1 2 3 4))
-  (define setx (set number-comparator 10 20 30 40))
   (test-assert (set=? set2 other-set2))
   (test-assert (not (set=? set2 set3)))
   (test-assert (not (set=? set2 set3 other-set2)))
@@ -122,24 +128,24 @@
   (test-assert (not (set>=? other-set2 set3 set2)))
 ) ; end sets/subsets
 
+;; Potentially mutable
+(define abcd (set eq-comparator 'a 'b 'c 'd))
+(define efgh (set eq-comparator 'e 'f 'g 'h))
+(define abgh (set eq-comparator 'a 'b 'g 'h))
+;; Never get a chance to be mutated
+(define other-abcd (set eq-comparator 'a 'b 'c 'd))
+(define other-efgh (set eq-comparator 'e 'f 'g 'h))
+(define other-abgh (set eq-comparator 'a 'b 'g 'h))
+(define all (set eq-comparator 'a 'b 'c 'd 'e 'f 'g 'h))
+(define none (set eq-comparator))
+(define ab (set eq-comparator 'a 'b))
+(define cd (set eq-comparator 'c 'd))
+(define ef (set eq-comparator 'e 'f))
+(define gh (set eq-comparator 'g 'h))
+(define cdgh (set eq-comparator 'c 'd 'g 'h))
+(define abcdgh (set eq-comparator 'a 'b 'c 'd 'g 'h))
+(define abefgh (set eq-comparator 'a 'b 'e 'f 'g 'h))
 (test-group "sets/ops"
-  ;; Potentially mutable
-  (define abcd (set eq-comparator 'a 'b 'c 'd))
-  (define efgh (set eq-comparator 'e 'f 'g 'h))
-  (define abgh (set eq-comparator 'a 'b 'g 'h))
-  ;; Never get a chance to be mutated
-  (define other-abcd (set eq-comparator 'a 'b 'c 'd))
-  (define other-efgh (set eq-comparator 'e 'f 'g 'h))
-  (define other-abgh (set eq-comparator 'a 'b 'g 'h))
-  (define all (set eq-comparator 'a 'b 'c 'd 'e 'f 'g 'h))
-  (define none (set eq-comparator))
-  (define ab (set eq-comparator 'a 'b))
-  (define cd (set eq-comparator 'c 'd))
-  (define ef (set eq-comparator 'e 'f))
-  (define gh (set eq-comparator 'g 'h))
-  (define cdgh (set eq-comparator 'c 'd 'g 'h))
-  (define abcdgh (set eq-comparator 'a 'b 'c 'd 'g 'h))
-  (define abefgh (set eq-comparator 'a 'b 'e 'f 'g 'h))
   (test-assert (set-disjoint? abcd efgh))
   (test-assert (not (set-disjoint? abcd ab)))
   (parameterize ((current-test-comparator set=?))
@@ -147,43 +153,43 @@
     (test all (set-union abcd efgh))
     (test abcdgh (set-union abcd abgh))
     (test abefgh (set-union efgh abgh))
-    (define efgh2 (set-copy efgh))
-    (set-union! efgh2)
-    (test efgh efgh2)
-    (set-union! efgh2 abgh)
-    (test abefgh efgh2)
+    (let ((efgh2 (set-copy efgh)))
+      (set-union! efgh2)
+      (test efgh efgh2)
+      (set-union! efgh2 abgh)
+      (test abefgh efgh2))
     (test abcd (set-intersection abcd))
     (test none (set-intersection abcd efgh))
-    (define abcd2 (set-copy abcd))
-    (set-intersection! abcd2)
-    (test abcd abcd2)
-    (set-intersection! abcd2 efgh)
-    (test none abcd2)
+    (let ((abcd2 (set-copy abcd)))
+      (set-intersection! abcd2)
+      (test abcd abcd2)
+      (set-intersection! abcd2 efgh)
+      (test none abcd2))
     (test ab (set-intersection abcd abgh))
     (test ab (set-intersection abgh abcd))
     (test abcd (set-difference abcd))
     (test cd (set-difference abcd ab))
     (test abcd (set-difference abcd gh))
     (test none (set-difference abcd abcd))
-    (define abcd3 (set-copy abcd))
-    (set-difference! abcd3)
-    (test abcd abcd3)
-    (set-difference! abcd3 abcd)
-    (test none abcd3)
+    (let ((abcd3 (set-copy abcd)))
+      (set-difference! abcd3)
+      (test abcd abcd3)
+      (set-difference! abcd3 abcd)
+      (test none abcd3))
     (test cdgh (set-xor abcd abgh))
     (test all (set-xor abcd efgh))
     (test none (set-xor abcd other-abcd))
-    (define abcd4 (set-copy abcd))
-    ;; don't test xor! effect
-    (test none (set-xor! abcd4 other-abcd))
-    (test "abcd smashed?" other-abcd abcd)
-    (test "efgh smashed?" other-efgh efgh)
-    (test "abgh smashed?" other-abgh abgh))
+    (let ((abcd4 (set-copy abcd)))
+      ;; don't test xor! effect
+      (test none (set-xor! abcd4 other-abcd))
+      (test "abcd smashed?" other-abcd abcd)
+      (test "efgh smashed?" other-efgh efgh)
+      (test "abgh smashed?" other-abgh abgh)))
 ) ; end sets/subsets
 
+(define nums (set number-comparator 1 2 3))
+(define syms (set eq-comparator 'a 'b 'c))
 (test-group "sets/mismatch"
-  (define nums (set number-comparator 1 2 3))
-  (define syms (set eq-comparator 'a 'b 'c))
   (test-error (set=? nums syms))
   (test-error (set<? nums syms))
   (test-error (set<=? nums syms))
@@ -199,15 +205,17 @@
   (test-error (set-xor! nums syms))
 ) ; end sets/mismatch
 
+(define whole (set eqv-comparator 1 2 3 4 5 6 7 8 9 10))
+(define whole2 (set-copy whole))
+(define whole3 (set-copy whole))
+(define whole4 (set-copy whole))
+(define bottom (set eqv-comparator 1 2 3 4 5))
+(define top (set eqv-comparator 6 7 8 9 10))
+(define-values (topx bottomx)
+  (set-partition big whole))
+(define hetero (set eqv-comparator 1 2 'a 3 4))
+(define homo (set eqv-comparator 1 2 3 4 5))
 (test-group "sets/whole"
-  (define whole (set eqv-comparator 1 2 3 4 5 6 7 8 9 10))
-  (define whole2 (set-copy whole))
-  (define whole3 (set-copy whole))
-  (define whole4 (set-copy whole))
-  (define bottom (set eqv-comparator 1 2 3 4 5))
-  (define top (set eqv-comparator 6 7 8 9 10))
-  (define-values (topx bottomx)
-    (set-partition big whole))
   (set-partition! big whole4)
   (parameterize ((current-test-comparator set=?))
     (test top (set-filter big whole))
@@ -220,8 +228,6 @@
     (test bottom bottomx)
     (test top whole4))
   (test 5 (set-count big whole))
-  (define hetero (set eqv-comparator 1 2 'a 3 4))
-  (define homo (set eqv-comparator 1 2 3 4 5))
   (test 'a (set-find symbol? hetero (lambda () (error "wrong"))))
   (test-error  (set-find symbol? homo (lambda () (error "wrong"))))
   (test-assert (set-any? symbol? hetero))
@@ -232,44 +238,41 @@
   (test-assert (set-every? number? homo))
 ) ; end sets/whole
 
+(define bucket (set string-ci-comparator "abc" "def"))
+(define nums (set number-comparator 1 2 3))
+;; nums is now {1, 2, 3}
+(define nums2 (set-replace nums 2.0))
+;; nums2 is now {1, 2.0, 3}
+(define sos
+  (set set-comparator
+       (set equal-comparator '(2 . 1) '(1 . 1) '(0 . 2) '(0 . 0))
+       (set equal-comparator '(2 . 1) '(1 . 1) '(0 . 0) '(0 . 2))))
 (test-group "sets/lowlevel"
-  (define bucket (set string-ci-comparator "abc" "def"))
   (test string-ci-comparator (set-element-comparator bucket))
   (test-assert (set-contains? bucket "abc"))
   (test-assert (set-contains? bucket "ABC"))
   (test "def" (set-member bucket "DEF" "fqz"))
   (test "fqz" (set-member bucket "lmn" "fqz"))
-  (define nums (set number-comparator 1 2 3))
-  ;; nums is now {1, 2, 3}
-  (define nums2 (set-replace nums 2.0))
-  ;; nums2 is now {1, 2.0, 3}
   (test-assert (set-any? inexact? nums2))
   (set-replace! nums 2.0)
   ;; nums is now {1, 2.0, 3}
   (test-assert (set-any? inexact? nums))
-  (define sos
-    (set set-comparator
-      (set equal-comparator '(2 . 1) '(1 . 1) '(0 . 2) '(0 . 0))
-      (set equal-comparator '(2 . 1) '(1 . 1) '(0 . 0) '(0 . 2))))
   (test 1 (set-size sos))
 ) ; end sets/lowlevel
 
-) ; end sets
-
-(test-group "bags"
+(define nums (bag number-comparator))
+;; nums is now {}
+(define syms (bag eq-comparator 'a 'b 'c 'd))
+;; syms is now {a, b, c, d}
+(define nums2 (bag-copy nums))
+;; nums2 is now {}
+(define syms2 (bag-copy syms))
+;; syms2 is now {a, b, c, d}
+(define esyms (bag eq-comparator))
+;; esyms is now {}
+(define total 0)
 (test-group "bags/simple"
-  (define nums (bag number-comparator))
-  ;; nums is now {}
-  (define syms (bag eq-comparator 'a 'b 'c 'd))
-  ;; syms is now {a, b, c, d}
-  (define nums2 (bag-copy nums))
-  ;; nums2 is now {}
-  (define syms2 (bag-copy syms))
-  ;; syms2 is now {a, b, c, d}
-  (define esyms (bag eq-comparator))
-  ;; esyms is now {}
   (test-assert (bag-empty? esyms))
-  (define total 0)
   (test-assert (bag? nums))
   (test-assert (bag? syms))
   (test-assert (bag? nums2))
@@ -318,49 +321,49 @@
   (test 4 (bag-size syms2))
 ) ; end bags/simple
 
+(define yam (bag char-comparator #\y #\a #\m))
+(define (failure/insert insert ignore)
+  (insert 1))
+(define (failure/ignore insert ignore)
+  (ignore 2))
+(define (success/update element update remove)
+  (update #\b 3))
+(define (success/remove element update remove)
+  (remove 4))
+(define yam! (bag char-comparator #\y #\a #\m #\!))
+(define bam (bag char-comparator #\b #\a #\m))
+(define ym (bag char-comparator #\y #\m))
+(define-values (bag1 obj1)
+  (bag-search! (bag-copy yam) #\! failure/insert error))
+(define-values (bag2 obj2)
+  (bag-search! (bag-copy yam) #\! failure/ignore error))
+(define-values (bag3 obj3)
+  (bag-search! (bag-copy yam) #\y error success/update))
+(define-values (bag4 obj4)
+  (bag-search! (bag-copy yam) #\a error success/remove))
 (test-group "bags/search"
-  (define yam (bag char-comparator #\y #\a #\m))
-  (define (failure/insert insert ignore)
-    (insert 1))
-  (define (failure/ignore insert ignore)
-    (ignore 2))
-  (define (success/update element update remove)
-    (update #\b 3))
-  (define (success/remove element update remove)
-    (remove 4))
-  (define yam! (bag char-comparator #\y #\a #\m #\!))
-  (define bam (bag char-comparator #\b #\a #\m))
-  (define ym (bag char-comparator #\y #\m))
-  (define-values (bag1 obj1)
-    (bag-search! (bag-copy yam) #\! failure/insert error))
   (test-assert (bag=? yam! bag1))
   (test 1 obj1)
-  (define-values (bag2 obj2)
-    (bag-search! (bag-copy yam) #\! failure/ignore error))
   (test-assert (bag=? yam bag2))
   (test 2 obj2)
-  (define-values (bag3 obj3)
-    (bag-search! (bag-copy yam) #\y error success/update))
   (test-assert (bag=? bam bag3))
   (test 3 obj3)
-  (define-values (bag4 obj4)
-    (bag-search! (bag-copy yam) #\a error success/remove))
   (test-assert (bag=? ym bag4))
   (test 4 obj4)
 ) ; end bags/search
 
+(define mybag (bag eqv-comparator 1 1 1 1 1 2 2))
 (test-group "bags/elemcount"
-  (define mybag (bag eqv-comparator 1 1 1 1 1 2 2))
   (test 5 (bag-element-count mybag 1))
   (test 0 (bag-element-count mybag 3))
 ) ; end bags/elemcount
 
+(define bag2 (bag number-comparator 1 2))
+(define other-bag2 (bag number-comparator 1 2))
+(define bag3 (bag number-comparator 1 2 3))
+(define bag4 (bag number-comparator 1 2 3 4))
+(define bagx (bag number-comparator 10 20 30 40))
 (test-group "bags/subbags"
-  (define bag2 (bag number-comparator 1 2))
-  (define other-bag2 (bag number-comparator 1 2))
-  (define bag3 (bag number-comparator 1 2 3))
-  (define bag4 (bag number-comparator 1 2 3 4))
-  (define bagx (bag number-comparator 10 20 30 40))
   (test-assert (bag=? bag2 other-bag2))
   (test-assert (not (bag=? bag2 bag3)))
   (test-assert (not (bag=? bag2 bag3 other-bag2)))
@@ -374,9 +377,9 @@
   (test-assert (not (bag>=? other-bag2 bag3 bag2)))
 ) ; end bags/subbags
 
+(define one (bag eqv-comparator 10))
+(define two (bag eqv-comparator 10 10))
 (test-group "bags/multi"
-  (define one (bag eqv-comparator 10))
-  (define two (bag eqv-comparator 10 10))
   (test-assert (not (bag=? one two)))
   (test-assert (bag<? one two))
   (test-assert (not (bag>? one two)))
@@ -397,24 +400,24 @@
   (test 12 (bag-fold-unique (lambda (k n r) (+ k n r)) 0 two))
 ) ; end bags/multi
 
+;; Potentially mutable
+(define abcd (bag eq-comparator 'a 'b 'c 'd))
+(define efgh (bag eq-comparator 'e 'f 'g 'h))
+(define abgh (bag eq-comparator 'a 'b 'g 'h))
+;; Never get a chance to be mutated
+(define other-abcd (bag eq-comparator 'a 'b 'c 'd))
+(define other-efgh (bag eq-comparator 'e 'f 'g 'h))
+(define other-abgh (bag eq-comparator 'a 'b 'g 'h))
+(define all (bag eq-comparator 'a 'b 'c 'd 'e 'f 'g 'h))
+(define none (bag eq-comparator))
+(define ab (bag eq-comparator 'a 'b))
+(define cd (bag eq-comparator 'c 'd))
+(define ef (bag eq-comparator 'e 'f))
+(define gh (bag eq-comparator 'g 'h))
+(define cdgh (bag eq-comparator 'c 'd 'g 'h))
+(define abcdgh (bag eq-comparator 'a 'b 'c 'd 'g 'h))
+(define abefgh (bag eq-comparator 'a 'b 'e 'f 'g 'h))
 (test-group "bags/ops"
-  ;; Potentially mutable
-  (define abcd (bag eq-comparator 'a 'b 'c 'd))
-  (define efgh (bag eq-comparator 'e 'f 'g 'h))
-  (define abgh (bag eq-comparator 'a 'b 'g 'h))
-  ;; Never get a chance to be mutated
-  (define other-abcd (bag eq-comparator 'a 'b 'c 'd))
-  (define other-efgh (bag eq-comparator 'e 'f 'g 'h))
-  (define other-abgh (bag eq-comparator 'a 'b 'g 'h))
-  (define all (bag eq-comparator 'a 'b 'c 'd 'e 'f 'g 'h))
-  (define none (bag eq-comparator))
-  (define ab (bag eq-comparator 'a 'b))
-  (define cd (bag eq-comparator 'c 'd))
-  (define ef (bag eq-comparator 'e 'f))
-  (define gh (bag eq-comparator 'g 'h))
-  (define cdgh (bag eq-comparator 'c 'd 'g 'h))
-  (define abcdgh (bag eq-comparator 'a 'b 'c 'd 'g 'h))
-  (define abefgh (bag eq-comparator 'a 'b 'e 'f 'g 'h))
   (test-assert (bag-disjoint? abcd efgh))
   (test-assert (not (bag-disjoint? abcd ab)))
   (parameterize ((current-test-comparator bag=?))
@@ -422,53 +425,53 @@
     (test all (bag-union abcd efgh))
     (test abcdgh (bag-union abcd abgh))
     (test abefgh (bag-union efgh abgh))
-    (define efgh2 (bag-copy efgh))
-    (bag-union! efgh2)
-    (test efgh efgh2)
-    (bag-union! efgh2 abgh)
-    (test abefgh efgh2)
+    (let ((efgh2 (bag-copy efgh)))
+      (bag-union! efgh2)
+      (test efgh efgh2)
+      (bag-union! efgh2 abgh)
+      (test abefgh efgh2))
     (test abcd (bag-intersection abcd))
     (test none (bag-intersection abcd efgh))
-    (define abcd2 (bag-copy abcd))
-    (bag-intersection! abcd2)
-    (test abcd abcd2)
-    (bag-intersection! abcd2 efgh)
-    (test none abcd2)
+    (let ((abcd2 (bag-copy abcd)))
+      (bag-intersection! abcd2)
+      (test abcd abcd2)
+      (bag-intersection! abcd2 efgh)
+      (test none abcd2))
     (test ab (bag-intersection abcd abgh))
     (test ab (bag-intersection abgh abcd))
     (test abcd (bag-difference abcd))
     (test cd (bag-difference abcd ab))
     (test abcd (bag-difference abcd gh))
     (test none (bag-difference abcd abcd))
-    (define abcd3 (bag-copy abcd))
-    (bag-difference! abcd3)
-    (test abcd abcd3)
-    (bag-difference! abcd3 abcd)
-    (test none abcd3)
+    (let ((abcd3 (bag-copy abcd)))
+      (bag-difference! abcd3)
+      (test abcd abcd3)
+      (bag-difference! abcd3 abcd)
+      (test none abcd3))
     (test cdgh (bag-xor abcd abgh))
     (test all (bag-xor abcd efgh))
     (test none (bag-xor abcd other-abcd))
-    (define abcd4 (bag-copy abcd))
-    (test none (bag-xor! abcd4 other-abcd))
-    (define abab (bag eq-comparator 'a 'b 'a 'b))
-    (test ab (bag-sum ab))
-    (define ab2 (bag-copy ab))
-    (test ab (bag-sum! ab2))
-    (test abab (bag-sum! ab2 ab))
-    (test abab ab2)
-    (test abab (bag-product 2 ab))
-    (define ab3 (bag-copy ab))
-    (bag-product! 2 ab3)
-    (test abab ab3)
+    (let ((abcd4 (bag-copy abcd)))
+      (test none (bag-xor! abcd4 other-abcd)))
+    (let ((abab (bag eq-comparator 'a 'b 'a 'b)))
+      (test ab (bag-sum ab))
+      (let ((ab2 (bag-copy ab)))
+        (test ab (bag-sum! ab2))
+        (test abab (bag-sum! ab2 ab))
+        (test abab ab2))
+      (test abab (bag-product 2 ab))
+      (let ((ab3 (bag-copy ab)))
+        (bag-product! 2 ab3)
+        (test abab ab3)))
     (test "abcd smashed?" other-abcd abcd)
     (test "abcd smashed?" other-abcd abcd)
     (test "efgh smashed?" other-efgh efgh)
     (test "abgh smashed?" other-abgh abgh))
 ) ; end bags/ops
 
+(define nums (bag number-comparator 1 2 3))
+(define syms (bag eq-comparator 'a 'b 'c))
 (test-group "bags/mismatch"
-  (define nums (bag number-comparator 1 2 3))
-  (define syms (bag eq-comparator 'a 'b 'c))
   (test-error (bag=? nums syms))
   (test-error (bag<? nums syms))
   (test-error (bag<=? nums syms))
@@ -483,15 +486,17 @@
   (test-error (bag-difference! nums syms))
 ) ; end bags/mismatch
 
+(define whole (bag eqv-comparator 1 2 3 4 5 6 7 8 9 10))
+(define whole2 (bag-copy whole))
+(define whole3 (bag-copy whole))
+(define whole4 (bag-copy whole))
+(define bottom (bag eqv-comparator 1 2 3 4 5))
+(define top (bag eqv-comparator 6 7 8 9 10))
+(define-values (topx bottomx)
+  (bag-partition big whole))
+(define hetero (bag eqv-comparator 1 2 'a 3 4))
+(define homo (bag eqv-comparator 1 2 3 4 5))
 (test-group "bags/whole"
-  (define whole (bag eqv-comparator 1 2 3 4 5 6 7 8 9 10))
-  (define whole2 (bag-copy whole))
-  (define whole3 (bag-copy whole))
-  (define whole4 (bag-copy whole))
-  (define bottom (bag eqv-comparator 1 2 3 4 5))
-  (define top (bag eqv-comparator 6 7 8 9 10))
-  (define-values (topx bottomx)
-    (bag-partition big whole))
   (bag-partition! big whole4)
   (parameterize ((current-test-comparator bag=?))
     (test top (bag-filter big whole))
@@ -504,8 +509,6 @@
     (test bottom bottomx)
     (test top whole4))
   (test 5 (bag-count big whole))
-  (define hetero (bag eqv-comparator 1 2 'a 3 4))
-  (define homo (bag eqv-comparator 1 2 3 4 5))
   (test 'a (bag-find symbol? hetero (lambda () (error "wrong"))))
   (test-error  (bag-find symbol? homo (lambda () (error "wrong"))))
   (test-assert (bag-any? symbol? hetero))
@@ -516,32 +519,31 @@
   (test-assert (bag-every? number? homo))
 ) ; end bags/whole
 
+(define bucket (bag string-ci-comparator "abc" "def"))
+(define nums (bag number-comparator 1 2 3))
+;; nums is now {1, 2, 3}
+(define nums2 (bag-replace nums 2.0))
+;; nums2 is now {1, 2.0, 3}
+(define bob
+  (bag bag-comparator
+       (bag eqv-comparator 1 2)
+       (bag eqv-comparator 1 2)))
 (test-group "bags/lowlevel"
-  (define bucket (bag string-ci-comparator "abc" "def"))
   (test string-ci-comparator (bag-element-comparator bucket))
   (test-assert (bag-contains? bucket "abc"))
   (test-assert (bag-contains? bucket "ABC"))
   (test "def" (bag-member bucket "DEF" "fqz"))
   (test "fqz" (bag-member bucket "lmn" "fqz"))
-  (define nums (bag number-comparator 1 2 3))
-  ;; nums is now {1, 2, 3}
-  (define nums2 (bag-replace nums 2.0))
-  ;; nums2 is now {1, 2.0, 3}
   (test-assert (bag-any? inexact? nums2))
   (bag-replace! nums 2.0)
   ;; nums is now {1, 2.0, 3}
   (test-assert (bag-any? inexact? nums))
-  (define bob
-    (bag bag-comparator
-      (bag eqv-comparator 1 2)
-      (bag eqv-comparator 1 2)))
   (test 2 (bag-size bob))
 ) ; end bags/lowlevel
 
-
+(define mybag (bag number-comparator 1 2))
+;; mybag is {1, 2}
 (test-group "bags/semantics"
-  (define mybag (bag number-comparator 1 2))
-  ;; mybag is {1, 2}
   (test 2 (bag-size mybag))
   (bag-adjoin! mybag 1)
   ;; mybag is {1, 1, 2}
@@ -562,12 +564,12 @@
   (test 0 (bag-size mybag))
 ) ; end bags/semantics
 
+(define multi (bag eqv-comparator 1 2 2 3 3 3))
+(define single (bag eqv-comparator 1 2 3))
+(define singleset (set eqv-comparator 1 2 3))
+(define minibag (bag eqv-comparator 'a 'a))
+(define alist '((a . 2)))
 (test-group "bags/convert"
-  (define multi (bag eqv-comparator 1 2 2 3 3 3))
-  (define single (bag eqv-comparator 1 2 3))
-  (define singleset (set eqv-comparator 1 2 3))
-  (define minibag (bag eqv-comparator 'a 'a))
-  (define alist '((a . 2)))
   (test alist (bag->alist minibag))
   (test-assert (bag=? minibag (alist->bag eqv-comparator alist)))
   (test-assert (set=? singleset (bag->set single)))
@@ -579,29 +581,25 @@
   (test-assert (bag-contains? minibag 1))
 ) ; end bags/convert
 
+(define abb (bag eq-comparator 'a 'b 'b))
+(define aab (bag eq-comparator 'a 'a 'b))
+(define total (bag-sum abb aab))
+(define bag1 (bag eqv-comparator 1))
 (test-group "bags/sumprod"
-  (define abb (bag eq-comparator 'a 'b 'b))
-  (define aab (bag eq-comparator 'a 'a 'b))
-  (define total (bag-sum abb aab))
   (test 3 (bag-count (lambda (x) (eqv? x 'a)) total))
   (test 3 (bag-count (lambda (x) (eqv? x 'b)) total))
   (test 12 (bag-size (bag-product 2 total)))
-  (define bag1 (bag eqv-comparator 1))
   (bag-sum! bag1 bag1)
   (test 2 (bag-size bag1))
   (bag-product! 2 bag1)
   (test 4 (bag-size bag1))
 ) ; end bag/sumprod
 
-) ; end bags
-
-
-
+(define a (set number-comparator 1 2 3))
+(define b (set number-comparator 1 2 4))
+(define aa (bag number-comparator 1 2 3))
+(define bb (bag number-comparator 1 2 4))
 (test-group "comparators"
-  (define a (set number-comparator 1 2 3))
-  (define b (set number-comparator 1 2 4))
-  (define aa (bag number-comparator 1 2 3))
-  (define bb (bag number-comparator 1 2 4))
   (test-assert (not (=? set-comparator a b)))
   (test-assert (=? set-comparator a (set-copy a)))
   (test-error (<? set-comparator a b))
@@ -610,7 +608,5 @@
   (test-error (<? bag-comparator aa bb))
   (test-assert (not (=? (make-default-comparator) a aa)))
 ) ; end comparators
-
-) ; end r7rs-sets
 
 (test-exit)

@@ -1,11 +1,19 @@
-(require-library srfi-69)
 (module srfi-113 ()
   (import scheme)
-  (import (only chicken
-    include define-record-type define-record-printer
-    case-lambda call/cc when error use))
-  (import (except srfi-69 hash-table-for-each))
-  (use srfi-128)
+  (cond-expand
+    (chicken-5
+     (import (only (chicken base)
+                   include define-record-type define-record-printer
+                   case-lambda call/cc when error)
+             (chicken module)
+             (except srfi-69 hash-table-for-each)
+             srfi-128))
+    (else
+     (import (only chicken
+                   include define-record-type define-record-printer
+                   case-lambda call/cc when error use))
+     (import (except srfi-69 hash-table-for-each))
+     (use srfi-128)))
 
   (export set set-unfold)
   (export set? set-contains? set-empty? set-disjoint?)

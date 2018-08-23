@@ -1,0 +1,16 @@
+;; -*- Hen -*-
+
+((synopsis "SRFI-113: Sets and Bags")
+ (version "0.9")
+ (license "BSD")
+ (category data)
+ (dependencies srfi-69 srfi-128)
+ (test-dependencies srfi-13 test)
+ (author "John Cowan")
+ ;(repo "https://github.com/scheme-requests-for-implementation/srfi-113")
+ (maintainer "Jeremy Steward")
+ (license "BSD")
+ (components
+  (extension
+   srfi-113
+   (csc-options "-O3" "-d0"))))
