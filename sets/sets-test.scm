@@ -126,6 +126,15 @@
   (test-assert (not (set>? set2 other-set2)))
   (test-assert (set>=? set3 other-set2 set2))
   (test-assert (not (set>=? other-set2 set3 set2)))
+  (test-assert (not (set<? set2 other-set2)))
+  (test-assert (not (set<? set2 setx)))
+  (test-assert (not (set<=? set2 setx)))
+  (test-assert (not (set>? set2 setx)))
+  (test-assert (not (set>=? set2 setx)))
+  (test-assert (not (set<?  set3 sety)))
+  (test-assert (not (set<=? set3 sety)))
+  (test-assert (not (set>?  set3 sety)))
+  (test-assert (not (set>=? set3 sety)))
 ) ; end sets/subsets
 
 ;; Potentially mutable
@@ -375,6 +384,15 @@
   (test-assert (not (bag>? bag2 other-bag2)))
   (test-assert (bag>=? bag3 other-bag2 bag2))
   (test-assert (not (bag>=? other-bag2 bag3 bag2)))
+  (test-assert (not (bag<? bag2 other-bag2)))
+  (test-assert (bag<=? bagx bagy))
+  (test-assert (not (bag<=? bagy bagx)))
+  (test-assert (bag<? bagx bagy))
+  (test-assert (not (bag<? bagy bagx)))
+  (test-assert (bag>=? bagy bagx))
+  (test-assert (not (bag>=? bagx bagy)))
+  (test-assert (bag>? bagy bagx))
+  (test-assert (not (bag>? bagx bagy)))
 ) ; end bags/subbags
 
 (define one (bag eqv-comparator 10))
