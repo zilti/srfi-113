@@ -2,6 +2,7 @@
   (chicken-5
    (import test
            (only srfi-13 string-downcase)
+           (except srfi-69 hash-table-for-each)
            srfi-113
            srfi-128))
   (else
