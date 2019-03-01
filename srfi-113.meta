@@ -8,6 +8,7 @@
         "sets/comparators-shim.scm"
         "tests/run.scm"
         "srfi-113.egg"
+        "srfi-113.scm"
         "srfi-113.setup"
         "srfi-113.meta"
         "srfi-113.release-info"
