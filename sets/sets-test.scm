@@ -114,6 +114,7 @@
 (define other-set2 (set number-comparator 1 2))
 (define set3 (set number-comparator 1 2 3))
 (define set4 (set number-comparator 1 2 3 4))
+(define sety (set number-comparator 1 2 4 5))
 (define setx (set number-comparator 10 20 30 40))
 (test-group "sets/subsets"
   (test-assert (set=? set2 other-set2))
@@ -373,6 +374,7 @@
 (define bag3 (bag number-comparator 1 2 3))
 (define bag4 (bag number-comparator 1 2 3 4))
 (define bagx (bag number-comparator 10 20 30 40))
+(define bagy (bag number-comparator 10 20 20 30 40))
 (test-group "bags/subbags"
   (test-assert (bag=? bag2 other-bag2))
   (test-assert (not (bag=? bag2 bag3)))

@@ -2,6 +2,9 @@
 *.swp
 *.import.scm
 *.so
+*.o
+*.sh
+*.link
 salmonella.log
 *.build.sh
 *.install.sh
