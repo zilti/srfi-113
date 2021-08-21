@@ -3,9 +3,15 @@
   (cond-expand
     (chicken-5
      (import (only (chicken base)
-                   include define-record-type define-record-printer
-                   case-lambda call/cc when error)
+                   case-lambda
+                   call/cc
+                   define-record-type
+                   define-record-printer
+                   error
+                   include
+                   when)
              (chicken module)
+             (chicken read-syntax)
              (except srfi-69 hash-table-for-each)
              srfi-128))
     (else
@@ -49,6 +55,11 @@
           bag-unique-size bag-element-count bag-for-each-unique bag-fold-unique
           bag-increment! bag-decrement! bag->set set->bag set->bag!
           bag->alist alist->bag)
+
+  (cond-expand
+    (chicken
+      (export set-sob-read-syntax-comparator!))
+    (else))
 
   (include "sets/sets-impl.scm")
 )
