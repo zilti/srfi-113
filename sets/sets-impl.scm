@@ -877,7 +877,7 @@
       (let ((ht1 (sob-hash-table sob1))
             (ht2 (sob-hash-table sob2)))
         (let ((smaller-count
-               (cond 
+               (cond
                 ((< (hash-table-size ht1) (hash-table-size ht2)) 1)
                 ((= (hash-table-size ht1) (hash-table-size ht2)) 0)
                 (else (return #f)))))
@@ -1300,17 +1300,34 @@
 (comparator-register-default! set-comparator)
 (comparator-register-default! bag-comparator)
 
-;;; Set/bag printer (for debugging)
-
-(define (sob-print sob port)
-  (display (if (sob-multi? sob) "&bag[" "&set[") port)
-  (sob-for-each
-    (lambda (elem) (display " " port) (write elem port))
-    sob)
-  (display " ]" port))
-
 ;; Chicken-specific
 (cond-expand
   (chicken
-    (define-record-printer sob sob-print))
+    (define sob-default-comparator (make-default-comparator))
+    (define (set-sob-read-syntax-comparator! comparator)
+      (set! sob-default-comparator comparator))
+
+    ;;; Set/bag printer (for debugging)
+    (define (sob-print sob port)
+      (display
+        (if (sob-multi? sob)
+          "#!bag"
+          "#!set")
+        port)
+      (display (sob->list sob)))
+
+    (define-record-printer sob sob-print)
+
+    (set-sharp-read-syntax! 'bag
+      (lambda (port)
+        (let ((list-of-elems (read)))
+          `(quote
+             ,(list->bag sob-default-comparator list-of-elems)))))
+
+    (set-sharp-read-syntax! 'set
+      (lambda (port)
+        (let ((list-of-elems (read)))
+          `(quote
+             ,(list->set sob-default-comparator list-of-elems)))))
+    )
   (else))
