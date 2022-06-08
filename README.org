@@ -2,9 +2,15 @@
 
 ** by John Cowan
 
+
+
+keywords: [[https://srfi.schemers.org/?keywords=data-structure][Data Structure]], [[https://srfi.schemers.org/?keywords=r7rs-large][R7RS Large]], [[https://srfi.schemers.org/?keywords=r7rs-large-red][R7RS Large: Red Edition]]
+
 This repository hosts [[https://srfi.schemers.org/srfi-113/][SRFI 113]]: Sets and bags, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
 
 This SRFI is in /final/ status.
+
+See also [[https://srfi.schemers.org/srfi-217/][SRFI 217: Integer Sets]].
 
 The full documentation for this SRFI can be found in the [[https://srfi.schemers.org/srfi-113/srfi-113.html][SRFI Document]].
 

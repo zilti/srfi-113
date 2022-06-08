@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "" "-//W3C//DTD HTML 3.2 Final//EN">
+<!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -18,48 +18,31 @@ John Cowan
 
 <p>
 <h1>Status</h1>
-This SRFI is currently in ``final'' status.
 
-To see an explanation of
-each status that a SRFI can hold, see <a
-href="http://srfi.schemers.org/srfi-process.html">here</a>.
-
-To provide input on this SRFI, please
-<a href="mailto:srfi minus 113 at srfi dot schemers dot org">mail to
-<code>&lt;srfi minus 113 at srfi dot schemers dot org&gt;</code></a>.  See
-<a href="../srfi-list-subscribe.html">instructions here</a> to
-subscribe to the list.  You can access previous messages via
-<a href="mail-archive/maillist.html">the archive of the mailing list</a>.
-You can access
-post-finalization messages via
-<a href="http://srfi.schemers.org/srfi-111/post-mail-archive/maillist.html">
-the archive of the mailing list</a>.
-</p>
-
-
+<p>This SRFI is currently in <em>final</em> status.  Here is <a href="https://srfi.schemers.org/srfi-process.html">an explanation</a> of each status that a SRFI can hold.  To provide input on this SRFI, please send email to <code><a href="mailto:srfi+minus+113+at+srfi+dotschemers+dot+org">srfi-113@<span class="antispam">nospam</span>srfi.schemers.org</a></code>.  To subscribe to the list, follow <a href="https://srfi.schemers.org/srfi-list-subscribe.html">these instructions</a>.  You can access previous messages via the mailing list <a href="https://srfi-email.schemers.org/srfi-113">archive</a>.</p>
 <ul>
-      <li>Received: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.1.html">2013/05/31</a></li>
-      <li>Draft: 2013/06/01-2013/08/01</li>
-      <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.2.html">2013/06/09</a></li>
-      <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.3.html">2013/07/03</a></li>
-      <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.4.html">2013/12/04</a></li>
-      <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.5.html">2014/03/31</a></li>
-      <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.6.html">2014/08/15</a></li>
-      <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.8.html">2014/08/19</a></li>
-      <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.9.html">2014/08/22</a></li>
-      <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.10.html">2014/08/22</a></li>
-      <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.11.html">2014/08/29</a></li>
-      <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.12.html">2014/11/16</a></li>
-      <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.13.html">2014/11/28</a></li>
-      <li>Final: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.14.html">2014/11/29</a></li>
+      <li>Received: <a href="https://srfi.schemers.org/srfi-113/srfi-113-1.1.html">2013-05-31</a></li>
+      <li>Draft: 2013-06-01--2013-08-01</li>
+      <li>Revised: <a href="https://srfi.schemers.org/srfi-113/srfi-113-1.2.html">2013-06-09</a></li>
+      <li>Revised: <a href="https://srfi.schemers.org/srfi-113/srfi-113-1.3.html">2013-07-03</a></li>
+      <li>Revised: <a href="https://srfi.schemers.org/srfi-113/srfi-113-1.4.html">2013-12-04</a></li>
+      <li>Revised: <a href="https://srfi.schemers.org/srfi-113/srfi-113-1.5.html">2014-03-31</a></li>
+      <li>Revised: <a href="https://srfi.schemers.org/srfi-113/srfi-113-1.6.html">2014-08-15</a></li>
+      <li>Revised: <a href="https://srfi.schemers.org/srfi-113/srfi-113-1.8.html">2014-08-19</a></li>
+      <li>Revised: <a href="https://srfi.schemers.org/srfi-113/srfi-113-1.9.html">2014-08-22</a></li>
+      <li>Revised: <a href="https://srfi.schemers.org/srfi-113/srfi-113-1.10.html">2014-08-22</a></li>
+      <li>Revised: <a href="https://srfi.schemers.org/srfi-113/srfi-113-1.11.html">2014-08-29</a></li>
+      <li>Revised: <a href="https://srfi.schemers.org/srfi-113/srfi-113-1.12.html">2014-11-16</a></li>
+      <li>Revised: <a href="https://srfi.schemers.org/srfi-113/srfi-113-1.13.html">2014-11-28</a></li>
+      <li>Final: <a href="https://srfi.schemers.org/srfi-113/srfi-113-1.14.html">2014-11-29</a></li>
       <li>Revised to fix errata:
 	<ul>
-	  <li>2016/5/14 (Add post-finalization note.)</li>
-	  <li>2016/11/29 (Fixed calls to `set-map` and `bag-map`.)</li>
-	  <li>2017/1/3 (Replaced references to "character set" with "set or bag.")</li>
-	  <li>2018/7/3 (Fixed wording error about total orders.)</li></ul></li>
+	  <li>2016-11-29 (Fixed calls to <code>set-map</code> and <code>bag-map</code>.)</li>
+	  <li>2017-01-03 (Replaced references to "character set" with "set or bag.")</li>
+	  <li>2018-07-03 (Fixed wording error about total orders.)</li>
+	  <li>2022-02-19 (Fixed order of arguments in example of <code>set-map</code>.)</li></ul></li>
     </ul>
-<p><b>Post-finalization note 1</b>: Because SRFI 114 has been deprecated
+<p id="pfn1"><b>Post-finalization note 1</b> (Added 2016-05-14.): Because SRFI 114 has been deprecated
         by SRFI 128, it is recommended that implementers make use of
         SRFI 128 rather than SRFI 114 comparators where comparators are
         specified in this SRFI.  Specifically, the procedures <code>set</code>,
@@ -71,7 +54,12 @@ the archive of the mailing list</a>.
         should be SRFI 128 comparators.  The sample implementation has
         been updated to depend on SRFI 128 rather than SRFI 114.
 </p>
-<p><b>Post-finalization note 2</b>: The order of arguments of <code>set-map</code> and <code>set-unfold</code> are not consistent with those of <code>hash-table-map</code> and <code>hash-table-unfold</code> in <a href="https://srfi.schemers.org/srfi-125/">SRFI 125</a>.  Both SRFI 113 and SRFI 125 are going to be part of R7RS large (also known as the <a href="http://trac.sacrideo.us/wg/wiki/RedEdition">Red Edition</a>), and the plan is to make them consistent there, following the order in SRFI 125.  Furthermore, <a href="https://srfi.schemers.org/srfi-146/">SRFI 146</a> (in draft status at the time of this writing) uses the order of SRFI 125.  Since this problem was discovered after SRFI 113 was finalized, and it wasn't an error in the SRFI, it's too late to fix it here.  However, John Cowan, the author, encourages implementers to consider adopting the order of SRFI 125.  Thanks to Marc Nieper-Wißkirchen for reporting this mismatch, and for providing a version of SRFI 113 with the recommended argument order in the implementation of SRFI 146.</p>
+<p id="pfn2"><b>Post-finalization note 2</b>: The order of arguments of <code>set-map</code> and <code>set-unfold</code> are not consistent with those of <code>hash-table-map</code> and <code>hash-table-unfold</code> in <a href="https://srfi.schemers.org/srfi-125/">SRFI 125</a>.  Both SRFI 113 and SRFI 125 are going to be part of R7RS large (also known as the <a href="http://trac.sacrideo.us/wg/wiki/RedEdition">Red Edition</a>), and the plan is to make them consistent there, following the order in SRFI 125.  Furthermore, <a href="https://srfi.schemers.org/srfi-146/">SRFI 146</a> (in draft status at the time of this writing) uses the order of SRFI 125.  Since this problem was discovered after SRFI 113 was finalized, and it wasn't an error in the SRFI, it's too late to fix it here.  However, John Cowan, the author, encourages implementers to consider adopting the order of SRFI 125.  Thanks to Marc Nieper-Wißkirchen for reporting this mismatch, and for providing a version of SRFI 113 with the recommended argument order in the implementation of SRFI 146.</p>
+
+<div id="pfn3"><p><b>Post-finalization note 3</b> (Added 2021-06-03): At the request of the SRFI author, this paragraph has been marked deleted <a href="#deleted-paragraph">where it appears below</a>:</p>
+  <blockquote>The implementation registers set-comparator and bag-comparator with SRFI 114's default comparator, assuming the sample implementation of SRFI 114 is being used. Scheme implementers who provide their own implementations of SRFI 114 must change this part of the code.</blockquote>
+  <p>John says:</p>
+  <blockquote>The words from "assuming" onwards represent the SRFI 114 situation, where registration was not standardized but was made available by the sample implementation, so since PFN 1 (which replaced SRFI 114 with SRFI 128) they are now meaningless anyway.</blockquote></div>
 
 <h1>Abstract</h1><p><em>Sets</em> and <em>bags</em> (also known as multisets) are unordered collections that can contain any Scheme object.  Sets enforce the constraint that no two elements can be the same in the sense of the set's associated <em>equality predicate</em>; bags do not.
 
@@ -79,17 +67,17 @@ the archive of the mailing list</a>.
 
 <h1>Rationale</h1>
 
-<p>Sets are a standard part of the libraries of many high-level programming languages, including Smalltalk, <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html">Java</a>, and <a href="http://www.cplusplus.com/reference/set/set/">C++</a>.  <a href="http://docs.racket-lang.org/reference/sets.html">Racket</a> provides general sets similar to those of this proposal, though with fewer procedures, and there is a Chicken egg called <code>sets</code> (unfortunately undocumented), which provides a minimal set of procedures.  <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a> also provides a list-based implementation of sets.</p>
+<p>Sets are a standard part of the libraries of many high-level programming languages, including Smalltalk, <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html">Java</a>, and <a href="http://www.cplusplus.com/reference/set/set/">C++</a>.  <a href="http://docs.racket-lang.org/reference/sets.html">Racket</a> provides general sets similar to those of this proposal, though with fewer procedures, and there is a Chicken egg called <code>sets</code> (unfortunately undocumented), which provides a minimal set of procedures.  <a href="https://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a> also provides a list-based implementation of sets.</p>
 
 <p>Bags are useful for counting anything from a fixed set of possibilities, e.g. the number of each type of error in a log file or the number of uses of each word in a lexicon drawn from a body of documents.  Although other data structures can serve the same purpose, using bags clearly expresses the programmer's intent and allows for optimization.</p>
 
 <p>Insofar as possible, the names in this SRFI are harmonized with the names used for ordered collections (lists, strings, vectors, and bytevectors) in Scheme.  However, <code>size</code> is used instead of <code>length</code> to express the number of elements in a collection, because <code>length</code> implies order.</p>
 
-<p>It's possible to use the general sets of this SRFI to contain characters, but the use of <a href="http://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a> is recommended instead.  The names and facilities in this SRFI are harmonized with SRFI 14, except that SRFI 14 does not contain analogues of the <code>set-search!</code>, <code>set&gt;?</code>, <code>set&lt;=?</code>, <code>set&gt;=?</code>, <code>set-remove</code>, or <code>set-partition</code> procedures.</p>
+<p>It's possible to use the general sets of this SRFI to contain characters, but the use of <a href="https://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a> is recommended instead.  The names and facilities in this SRFI are harmonized with SRFI 14, except that SRFI 14 does not contain analogues of the <code>set-search!</code>, <code>set&gt;?</code>, <code>set&lt;=?</code>, <code>set&gt;=?</code>, <code>set-remove</code>, or <code>set-partition</code> procedures.</p>
 
-<p>Sets and bags do not have a lexical syntax representation.  It's possible to use <a href="http://srfi.schemers.org/srfi-108/srfi-108.html">SRFI 108</a> quasi-literal constructors to create them in code, but this SRFI does not standardize how that is done.</p>
+<p>Sets and bags do not have a lexical syntax representation.  It's possible to use <a href="https://srfi.schemers.org/srfi-108/srfi-108.html">SRFI 108</a> quasi-literal constructors to create them in code, but this SRFI does not standardize how that is done.</p>
 
-<p>The interface to general sets and bags depends on <a href="http://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a> comparators, despite that SRFI having a higher number than this one for <a href="http://www.catb.org/jargon/html/H/hysterical-reasons.html">hysterical raisins</a>. Comparators conveniently package the equality predicate of the set with the hash function or comparison procedure needed to implement the set efficiently.</p>
+<p>The interface to general sets and bags depends on <a href="https://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a> comparators, despite that SRFI having a higher number than this one for <a href="http://www.catb.org/jargon/html/H/hysterical-reasons.html">hysterical raisins</a>. Comparators conveniently package the equality predicate of the set with the hash function or comparison procedure needed to implement the set efficiently.</p>
 
 <h1>Specification</h1>
 
@@ -163,7 +151,7 @@ the archive of the mailing list</a>.
 
 <p><code>(set </code><em>comparator</em> <em>element</em> ... <code>)</code></p>
 
-<p>Returns a newly allocated empty set.  The <em>comparator</em> argument is a <a href="http://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a> comparator, which is used to control and distinguish the elements of the set.  The <em>elements</em> are used to initialize the set.</p>
+<p>Returns a newly allocated empty set.  The <em>comparator</em> argument is a <a href="https://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a> comparator, which is used to control and distinguish the elements of the set.  The <em>elements</em> are used to initialize the set.</p>
 
 <p><code>(set-unfold </code><em>comparator stop? mapper successor seed</em><code>)</code></p>
 
@@ -213,7 +201,7 @@ the archive of the mailing list</a>.
 
 <p><code>(set-replace! </code><em>set element</em><code>)</code></p>
 
-<p>The <code>set-replace!</code> procedure is the same as<code>set-replace</code>, except that it is permitted to mutate and return the <em>set</em> argument rather than allocating a new set.</p>
+<p>The <code>set-replace!</code> procedure is the same as <code>set-replace</code>, except that it is permitted to mutate and return the <em>set</em> argument rather than allocating a new set.</p>
 
 <p><code>(set-delete </code><em>set element</em> ...<code>)</code></p>
 
@@ -279,8 +267,8 @@ Returns <code>#t</code> if every element of <em>set</em> satisfies <em>predicate
 <p>Note that, when <em>proc</em> defines a mapping that is not 1:1, some of the mapped objects may be equivalent in the sense of <em>comparator's</em> equality predicate, and in this case duplicate elements are omitted as in the set constructor.  For example:</p>
 
 <pre>
-(set-map (lambda (x) (quotient x 2))
-         integer-comparator
+(set-map integer-comparator
+         (lambda (x) (quotient x 2))
          (set integer-comparator 1 2 3 4 5))
  => (set integer-comparator 0 1 2)
 </pre>
@@ -434,7 +422,7 @@ The <code>bag-sum</code> procedure returns a newly allocated bag containing all 
 
 The <code>bag-product</code> procedure returns a newly allocated bag containing all the unique elements in <em>bag</em>, where the count of each unique element in the bag is equal to the count of that element in <code>bag</code> multiplied by <em>n</em>.
 
-</p><p>The <code>bag-product!</code> procedure is equivalent except that it is linear-update.
+<p>The <code>bag-product!</code> procedure is equivalent except that it is linear-update.
 
 </p><p><code>(bag-unique-size </code><em>bag</em><code>)</code></p><p>
 
@@ -478,11 +466,11 @@ Note that these comparators do not provide comparison procedures, as there is no
 
 <p>Sets and bags are implemented as a thin veneer over hashtables.</p>
 
-<p>The implementation registers <code>set-comparator</code> and
+<p id="deleted-paragraph"><del>The implementation registers <code>set-comparator</code> and
 <code>bag-comparator</code> with SRFI 114's default comparator, assuming
 the sample implementation of SRFI 114 is being used.  Scheme implementers
 who provide their own implementations of SRFI 114 must change this part
-of the code.</p>
+of the code.</del> (See <a href="#pfn3">post-finalization note #3</a>.)</p>
 
 <p>The <a href="https://srfi.schemers.org/srfi-113/srfi-113.tgz">sample implementation</a> contains the following files:</p>
 
@@ -516,7 +504,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.</p>
 
     <hr/>
-<address>Editor: <a href="mailto:srfi-editors at srfi dot schemers dot org">
+<address>Editor: <a href="mailto:srfi-editors+at+srfi+dot+schemers+dot+org">
              Mike Sperber</a></address>
   
 

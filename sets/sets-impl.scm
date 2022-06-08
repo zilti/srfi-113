@@ -880,7 +880,7 @@
                (cond
                 ((< (hash-table-size ht1) (hash-table-size ht2)) 1)
                 ((= (hash-table-size ht1) (hash-table-size ht2)) 0)
-                (else (return #f)))))
+                (else (return #f))))
           (hash-table-for-each
            (lambda (key value)
              (let ((value2 (hash-table-ref/default ht2 key 0)))
