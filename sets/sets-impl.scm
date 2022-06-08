@@ -79,10 +79,10 @@
 
 (define (sob-check-comparators list)
   (if (not (null? list))
-      (for-each
-        (lambda (sob)
-          (check-same-comparator (car list) sob))
-        (cdr list))))
+    (for-each
+      (lambda (sob)
+        (check-same-comparator (car list) sob))
+      (cdr list))))
 
 ;; This procedure is used directly when there are exactly two arguments.
 
@@ -108,8 +108,8 @@
 
 (define (sob-copy sob)
   (raw-make-sob (hash-table-copy (sob-hash-table sob))
-            (sob-comparator sob)
-            (sob-multi? sob)))
+                (sob-comparator sob)
+                (sob-multi? sob)))
 
 (define (set-copy set)
   (check-set set)
@@ -146,10 +146,10 @@
   (let ((result (make-sob comparator multi?)))
     (let loop ((seed seed))
       (if (stop? seed)
-          result
-          (begin
-            (sob-increment! result (mapper seed) 1)
-            (loop (successor seed)))))))
+        result
+        (begin
+          (sob-increment! result (mapper seed) 1)
+          (loop (successor seed)))))))
 
 (define (set-unfold continue? mapper successor seed comparator)
   (sob-unfold continue? mapper successor seed comparator #f))
@@ -197,7 +197,7 @@
         (hash-table-for-each
           (lambda (key val) (if (hash-table-contains? hb key) (return #f)))
           ha)
-      #t))))
+        #t))))
 
 (define (set-disjoint? a b)
   (check-set a)
@@ -505,7 +505,7 @@
         (lambda (key value)
           (if (pred key) (return key)))
         (sob-hash-table sob))
-    (failure))))
+      (failure))))
 
 (define (set-find pred set failure)
   (check-set set)
@@ -817,7 +817,7 @@
             (if (not (= value (hash-table-ref/default ht2 key 0)))
               (return #f)))
           ht1))
-     #t)))
+      #t)))
 
 (define sob<=?
   (case-lambda
@@ -877,18 +877,18 @@
       (let ((ht1 (sob-hash-table sob1))
             (ht2 (sob-hash-table sob2)))
         (let ((smaller-count
-               (cond
-                ((< (hash-table-size ht1) (hash-table-size ht2)) 1)
-                ((= (hash-table-size ht1) (hash-table-size ht2)) 0)
-                (else (return #f))))
+                (cond
+                  ((< (hash-table-size ht1) (hash-table-size ht2)) 1)
+                  ((= (hash-table-size ht1) (hash-table-size ht2)) 0)
+                  (else (return #f)))))
           (hash-table-for-each
-           (lambda (key value)
-             (let ((value2 (hash-table-ref/default ht2 key 0)))
-               (if (not (<= value value2))
-                 (return #f)
-                 (if (< value value2)
-                   (set! smaller-count (+ smaller-count 1))))))
-           ht1)
+            (lambda (key value)
+              (let ((value2 (hash-table-ref/default ht2 key 0)))
+                (if (not (<= value value2))
+                  (return #f)
+                  (if (< value value2)
+                    (set! smaller-count (+ smaller-count 1))))))
+            ht1)
           (positive? smaller-count))))))
 
 (define sob>?
@@ -939,7 +939,7 @@
 ;; A trivial helper function which upper-bounds n by one if multi? is false.
 
 (define (max-one n multi?)
-    (if multi? n (if (> n 1) 1 n)))
+  (if multi? n (if (> n 1) 1 n)))
 
 ;; The logic of union, intersection, difference, and sum is the same: the
 ;; sob-* and sob-*! procedures do the reduction to the dyadic-sob-*!
@@ -955,8 +955,8 @@
     (let ((result (sob-empty-copy sob1)))
       (dyadic-sob-union! result sob1 (car sobs))
       (for-each
-       (lambda (sob) (dyadic-sob-union! result result sob))
-       (cdr sobs))
+        (lambda (sob) (dyadic-sob-union! result result sob))
+        (cdr sobs))
       result)))
 
 ;; For union, we take the max of the counts of each element found
@@ -977,7 +977,7 @@
       (lambda (key value2)
         (let ((value1 (hash-table-ref/default sob1-ht key 0)))
           (if (= value1 0)
-              (hash-table-set! result-ht key value2))))
+            (hash-table-set! result-ht key value2))))
       sob2-ht)))
 
 (define (set-union . sets)
@@ -990,8 +990,8 @@
 
 (define (sob-union! sob1 . sobs)
   (for-each
-   (lambda (sob) (dyadic-sob-union! sob1 sob1 sob))
-   sobs)
+    (lambda (sob) (dyadic-sob-union! sob1 sob1 sob))
+    sobs)
   sob1)
 
 (define (set-union! . sets)
@@ -1008,8 +1008,8 @@
     (let ((result (sob-empty-copy sob1)))
       (dyadic-sob-intersection! result sob1 (car sobs))
       (for-each
-       (lambda (sob) (dyadic-sob-intersection! result result sob))
-       (cdr sobs))
+        (lambda (sob) (dyadic-sob-intersection! result result sob))
+        (cdr sobs))
       (sob-cleanup! result))))
 
 ;; For intersection, we compute the min of the counts of each element.
@@ -1036,8 +1036,8 @@
 
 (define (sob-intersection! sob1 . sobs)
   (for-each
-   (lambda (sob) (dyadic-sob-intersection! sob1 sob1 sob))
-   sobs)
+    (lambda (sob) (dyadic-sob-intersection! sob1 sob1 sob))
+    sobs)
   (sob-cleanup! sob1))
 
 (define (set-intersection! . sets)
@@ -1054,8 +1054,8 @@
     (let ((result (sob-empty-copy sob1)))
       (dyadic-sob-difference! result sob1 (car sobs))
       (for-each
-       (lambda (sob) (dyadic-sob-difference! result result sob))
-       (cdr sobs))
+        (lambda (sob) (dyadic-sob-difference! result result sob))
+        (cdr sobs))
       (sob-cleanup! result))))
 
 ;; For difference, we use (big surprise) the numeric difference, bounded
@@ -1082,8 +1082,8 @@
 
 (define (sob-difference! sob1 . sobs)
   (for-each
-   (lambda (sob) (dyadic-sob-difference! sob1 sob1 sob))
-   sobs)
+    (lambda (sob) (dyadic-sob-difference! sob1 sob1 sob))
+    sobs)
   (sob-cleanup! sob1))
 
 (define (set-difference! . sets)
@@ -1100,8 +1100,8 @@
     (let ((result (sob-empty-copy sob1)))
       (dyadic-sob-sum! result sob1 (car sobs))
       (for-each
-       (lambda (sob) (dyadic-sob-sum! result result sob))
-       (cdr sobs))
+        (lambda (sob) (dyadic-sob-sum! result result sob))
+        (cdr sobs))
       result)))
 
 ;; Sum is just like union, except that we take the sum rather than the max.
@@ -1119,7 +1119,7 @@
       (lambda (key value2)
         (let ((value1 (hash-table-ref/default sob1-ht key 0)))
           (if (= value1 0)
-              (hash-table-set! result-ht key value2))))
+            (hash-table-set! result-ht key value2))))
       sob2-ht)))
 
 
@@ -1131,8 +1131,8 @@
 
 (define (sob-sum! sob1 . sobs)
   (for-each
-   (lambda (sob) (dyadic-sob-sum! sob1 sob1 sob))
-   sobs)
+    (lambda (sob) (dyadic-sob-sum! sob1 sob1 sob))
+    sobs)
   sob1)
 
 (define (bag-sum! . bags)
@@ -1158,7 +1158,7 @@
       (lambda (key value2)
         (let ((value1 (hash-table-ref/default sob1-ht key 0)))
           (if (= value1 0)
-              (hash-table-set! result-ht key value2))))
+            (hash-table-set! result-ht key value2))))
       sob2-ht)
     (hash-table-for-each
       (lambda (key value1)
@@ -1202,7 +1202,7 @@
     result))
 
 (define (valid-n n)
-   (and (integer? n) (exact? n) (positive? n)))
+  (and (integer? n) (exact? n) (positive? n)))
 
 (define (bag-product n bag)
   (check-bag bag)
@@ -1275,7 +1275,7 @@
       (lambda (assoc)
         (let ((element (car assoc)))
           (if (not (hash-table-contains? ht element))
-              (sob-increment! result element (cdr assoc)))))
+            (sob-increment! result element (cdr assoc)))))
       alist)
     result))
 
@@ -1319,15 +1319,15 @@
     (define-record-printer sob sob-print)
 
     (set-sharp-read-syntax! 'bag
-      (lambda (port)
-        (let ((list-of-elems (read)))
-          `(quote
-             ,(list->bag sob-default-comparator list-of-elems)))))
+                            (lambda (port)
+                              (let ((list-of-elems (read)))
+                                `(quote
+                                   ,(list->bag sob-default-comparator list-of-elems)))))
 
     (set-sharp-read-syntax! 'set
-      (lambda (port)
-        (let ((list-of-elems (read)))
-          `(quote
-             ,(list->set sob-default-comparator list-of-elems)))))
+                            (lambda (port)
+                              (let ((list-of-elems (read)))
+                                `(quote
+                                   ,(list->set sob-default-comparator list-of-elems)))))
     )
   (else))
