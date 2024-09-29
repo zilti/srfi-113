@@ -1316,7 +1316,11 @@
         port)
       (display (sob->list sob)))
 
-    (define-record-printer sob sob-print)
+    (cond-expand
+      (chicken-6
+       (set-record-printer! sob sob-print))
+      (else
+       (define-record-printer sob sob-print)))
 
     (set-sharp-read-syntax! 'bag
                             (lambda (port)

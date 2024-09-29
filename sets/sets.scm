@@ -1,6 +1,20 @@
 (module srfi-113 ()
   (import scheme)
   (cond-expand
+    (chicken-6
+     (import (scheme case-lambda)
+             (only (scheme base)
+                   call/cc)
+             (only (chicken base)
+                   define-record-type
+                   set-record-printer!
+                   error
+                   include
+                   when)
+             (chicken module)
+             (chicken read-syntax)
+             (except srfi-69 hash-table-for-each)
+             srfi-128))
     (chicken-5
      (import (only (chicken base)
                    case-lambda
